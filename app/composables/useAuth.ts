@@ -22,13 +22,11 @@ export const useAuth = () => {
     if (!$auth || authInitialized) return
     authInitialized = true
 
-    // Check current user immediately
     if ($auth.currentUser) {
       user.value = $auth.currentUser
       loading.value = false
     }
 
-    // Listen for future changes
     onAuthStateChanged($auth, (firebaseUser) => {
       user.value = firebaseUser
       loading.value = false
@@ -41,7 +39,6 @@ export const useAuth = () => {
     try {
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup($auth, provider)
-      // onAuthStateChanged will update user.value
       authModalOpen.value = false
       return result.user
     } catch (error) {
@@ -56,9 +53,7 @@ export const useAuth = () => {
     try {
       const result = await createUserWithEmailAndPassword($auth, email, password)
       await updateProfile(result.user, { displayName })
-      // Force refresh to get updated profile
       await result.user.reload()
-      // onAuthStateChanged will update user.value
       authModalOpen.value = false
       return result.user
     } catch (error) {
@@ -72,7 +67,6 @@ export const useAuth = () => {
 
     try {
       const result = await signInWithEmailAndPassword($auth, email, password)
-      // onAuthStateChanged will update user.value
       authModalOpen.value = false
       return result.user
     } catch (error) {

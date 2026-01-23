@@ -8,28 +8,39 @@ import {
   updateProfile,
   type User 
 } from 'firebase/auth'
+import { ref, type Ref } from 'vue'
 
+const globalUser: Ref<User | null> = ref(null)
+const globalLoading = ref(true)
+const globalAuthModalOpen = ref(false)
 let authInitialized = false
 
 export const useAuth = () => {
-  const user = useState<User | null>('firebase-user', () => null)
-  const loading = useState('auth-loading', () => true)
-  const authModalOpen = useState('auth-modal-open', () => false)
-
   const { $auth } = useNuxtApp()
 
+  const updateUser = (newUser: User | null) => {
+    globalUser.value = newUser
+    globalLoading.value = false
+  }
+
   const initAuth = () => {
-    if (!$auth || authInitialized) return
+    if (!$auth) return
+    
+    if (authInitialized) {
+      if ($auth.currentUser && !globalUser.value) {
+        updateUser($auth.currentUser)
+      }
+      return
+    }
+    
     authInitialized = true
 
     if ($auth.currentUser) {
-      user.value = $auth.currentUser
-      loading.value = false
+      updateUser($auth.currentUser)
     }
 
     onAuthStateChanged($auth, (firebaseUser) => {
-      user.value = firebaseUser
-      loading.value = false
+      updateUser(firebaseUser)
     })
   }
 
@@ -39,7 +50,8 @@ export const useAuth = () => {
     try {
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup($auth, provider)
-      authModalOpen.value = false
+      updateUser(result.user)
+      globalAuthModalOpen.value = false
       return result.user
     } catch (error) {
       console.error('Firebase sign in error:', error)
@@ -54,7 +66,8 @@ export const useAuth = () => {
       const result = await createUserWithEmailAndPassword($auth, email, password)
       await updateProfile(result.user, { displayName })
       await result.user.reload()
-      authModalOpen.value = false
+      updateUser($auth.currentUser)
+      globalAuthModalOpen.value = false
       return result.user
     } catch (error) {
       console.error('Registration error:', error)
@@ -67,7 +80,8 @@ export const useAuth = () => {
 
     try {
       const result = await signInWithEmailAndPassword($auth, email, password)
-      authModalOpen.value = false
+      updateUser(result.user)
+      globalAuthModalOpen.value = false
       return result.user
     } catch (error) {
       console.error('Login error:', error)
@@ -80,7 +94,7 @@ export const useAuth = () => {
 
     try {
       await signOut($auth)
-      user.value = null
+      updateUser(null)
     } catch (error) {
       console.error('Sign out error:', error)
       throw error
@@ -88,17 +102,17 @@ export const useAuth = () => {
   }
 
   const openAuthModal = () => {
-    authModalOpen.value = true
+    globalAuthModalOpen.value = true
   }
 
   const closeAuthModal = () => {
-    authModalOpen.value = false
+    globalAuthModalOpen.value = false
   }
 
   return {
-    user,
-    loading,
-    authModalOpen,
+    user: globalUser,
+    loading: globalLoading,
+    authModalOpen: globalAuthModalOpen,
     initAuth,
     signInWithGoogle,
     registerWithEmail,

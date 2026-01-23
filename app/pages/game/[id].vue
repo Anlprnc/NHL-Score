@@ -220,7 +220,7 @@ const scoringByPeriod = computed(() => {
               {{ period }}
             </h4>
 
-            <div class="space-y-4">
+            <!-- <div class="space-y-4">
               <div v-for="play in plays" :key="play.id"
                 class="flex items-start gap-4 p-4 bg-black/20 rounded-xl hover:bg-black/30 transition-colors">
                 <img :src="play.team.logo" :alt="play.team.name" class="w-10 h-10 object-contain flex-shrink-0" />
@@ -245,17 +245,17 @@ const scoringByPeriod = computed(() => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
 
       <!-- No Scoring -->
-      <div v-else-if="game.status.state !== 'pre'"
+      <!-- <div v-else-if="game.status.state !== 'pre'"
         class="bg-gradient-to-br from-puck-light/80 to-puck/80 backdrop-blur-sm rounded-2xl border border-ice-900/30 p-8 text-center mb-8">
         <span class="text-4xl mb-4 block">🥅</span>
         <p class="text-gray-400 font-mono">No goals scored yet</p>
-      </div>
+      </div> -->
 
       <!-- Team Stats -->
       <div v-if="game.teamStats.home.length || game.teamStats.away.length"

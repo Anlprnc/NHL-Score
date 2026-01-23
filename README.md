@@ -1,75 +1,11 @@
-# Nuxt Minimal Starter
+🏒 Hockey Score Tracker
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Live demo: https://hockeyscore-22b83.web.app/
 
-## Setup
+A simple and clean web application to track hockey scores in real-time. Built for easy use and quick updates — perfect for following games as they happen.
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+🚀 Features
+	•	📊 Real-time score updates
+	•	🧠 Clean and intuitive UI
+	•	🌐 Accessible on all devices
+	•	🔗 Deployed with a live link
